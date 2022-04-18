@@ -1,11 +1,84 @@
 <div class="login">
   <div class="form">
-    <form class="login-form" method="post"  action="/login-p">
+    <form class="login-form" id="login" method="post" action="/login-p">
       <span class="material-icons">Login</span>
-      <div class="text-danger">{{err}}</div>
-      <input type="text" placeholder="name"    name="Name" required/ >
-      <input type="password" placeholder="password" name="Password" required />
-      <button type="submit">  login</button>
-    </form>  
+
+      <div class="text-danger" style="font-size: 15px;" id="fname_error_message"></div>
+
+      <input type="text" placeholder="name" id="form_fname" name="Name">
+      <div class="text-danger" style="font-size: 15px;" id="password_error_message">  </div>
+
+      <input type="password" placeholder="password" id="form_password" name="Password">
+      <button type="submit"> login</button>
+    </form>
   </div>
 </div>
+
+
+<script>
+  var error_fname=false;
+  var error_password=false;
+
+
+  $("fname_error_message").hide()
+  $("#password_error_message").hide()
+  $("#form_fname").focusout(function () {
+    check_fname();
+  });
+  $("#form_password").focusout(function () {
+    check_password();
+  });
+  function check_fname() {
+    var pattern = /^[a-zA-Z]*$/;
+    var fname = $("#form_fname").val();
+    if (pattern.test(fname) && fname !== '') {
+      $("#fname_error_message").hide();
+      $("#form_fname").css("border-bottom", "2px solid #34F458");
+    } else {
+      $("#fname_error_message").html("Enter a valid name");
+      $("#fname_error_message").show();
+      $("#form_fname").css("border-bottom", "2px solid #F90A0A");
+      error_fname = true;
+    }
+  }
+
+  function check_password() {
+    var password_length = $("#form_password").val().length;
+    if (password_length < 8) {
+      $("#password_error_message").html("Atleast 8 Characters");
+      $("#password_error_message").show();
+      $("#form_password").css("border-bottom", "2px solid #F90A0A");
+      error_password = true;
+    } else {
+      $("#password_error_message").hide();
+      $("#form_password").css("border-bottom", "2px solid #34F458");
+    }
+  }
+
+
+      $("#login").submit(function() {
+       
+            error_fname = false;
+            error_password = false;
+            
+
+            check_fname();
+         
+            check_password();
+          
+
+            if (error_fname === false && error_password === false ) {
+               
+               return true;
+            } else {
+              
+         
+                Swal.fire('Please Fill the form Correctly')
+               return false;
+            }
+
+
+         });
+     
+
+</script>
